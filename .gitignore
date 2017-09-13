@@ -1,1 +1,8 @@
 default.vim
+lib
+objs
+Relay.cpp.gcov
+default.profraw
+RelayTests_tests
+cov.info
+output

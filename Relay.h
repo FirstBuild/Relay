@@ -24,21 +24,23 @@ typedef enum {
 
 class Relay {
   public:
-    Relay(int pin, uint16_t periodInSeconds);
+    Relay(uint8_t pin, uint16_t periodInSeconds);
     void setRelayState(RelayState state);
     RelayState getRelayState(void);
     void setRelayPosition(RelayPosition position);
     RelayPosition getRelayPosition(void);
     void setDutyCyclePercent(double dutyCycle);
+    double getDutyCyclePercent(void);
     void updateRelay(void);
 
   private:
-    int _pin;
+    uint8_t _pin;
     uint16_t _periodInSeconds;
     double _dutyCycle;
-    RelayState state;
-    RelayPosition position;
+    RelayState _state;
+    RelayPosition _position;
     uint32_t _periodTime;
+    uint32_t _oldTime;
 };
 
 #endif // RELAY_H
