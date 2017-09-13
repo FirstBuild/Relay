@@ -1,0 +1,19 @@
+{
+  "name": "FirstBuild - Relay",
+  "keywords": "relay, duty cycle",
+  "description": "Control a relay by specifying a period and duty cycle.  Useful for PID control where the output is a relay.",
+  "url": "https://github.com/FirstBuild/Relay",
+  "include": "Relay"
+  "authors":
+  [
+    {
+      "name": "Rob Bultman"
+    }
+  ],
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/FirstBuild/Relay.git"
+  },
+  "frameworks": "arduino"
+}
