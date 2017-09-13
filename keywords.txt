@@ -12,11 +12,20 @@ Relay	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-SetMode	KEYWORD2
+Relay	KEYWORD2
+getRelayState	KEYWORD2
+getRelayState	KEYWORD2
+setRelayPosition	KEYWORD2
+getRelayPosition	KEYWORD2
+setDutyCyclePercent	KEYWORD2
+updateRelay	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
 
-AUTOMATIC	LITERAL1
+relayStateIdle	LITERAL1
+relayStateRunning	LITERAL1
+relayPositionOpen	LITERAL1
+relayPositionClosed	LITERAL1
 
