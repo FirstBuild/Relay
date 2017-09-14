@@ -7,6 +7,8 @@
 #######################################
 
 Relay	KEYWORD1
+RelayPosition KEYWORD1
+RelayState KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
