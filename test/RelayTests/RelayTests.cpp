@@ -32,7 +32,7 @@ TEST(RelayTests, constructor)
    mock().checkExpectations();
 
    CHECK_EQUAL(relayPositionOpen, pRelay->getRelayPosition());
-   CHECK_EQUAL(relayStateManual, pRelay->getRelayState());
+   CHECK_EQUAL(relayModeManual, pRelay->getRelayMode());
    DOUBLES_EQUAL(0.5, pRelay->getDutyCyclePercent(), 0.0001);
 
    delete pRelay;
@@ -57,14 +57,14 @@ TEST(RelayTests, setPositionOpen)
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
 
-TEST(RelayTests, setRelayState)
+TEST(RelayTests, setRelayMode)
 {
    Relay relay(1, 30);
 
-   relay.setRelayState(relayStateAutomatic);
-   CHECK_EQUAL(relayStateAutomatic, relay.getRelayState());
-   relay.setRelayState(relayStateManual);
-   CHECK_EQUAL(relayStateManual, relay.getRelayState());
+   relay.setRelayMode(relayModeAutomatic);
+   CHECK_EQUAL(relayModeAutomatic, relay.getRelayMode());
+   relay.setRelayMode(relayModeManual);
+   CHECK_EQUAL(relayModeManual, relay.getRelayMode());
 }
 
 TEST(RelayTests, setDutyCycle)
@@ -88,18 +88,18 @@ TEST(RelayTests, setDutyCycleIgnoresOutOfRangeInput)
 TEST(RelayTests, settingStateToIdleTurnsOffRelay)
 {
    Relay relay(1, 30);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    relay.setRelayPosition(relayPositionClosed);
 
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", LOW);
-   relay.setRelayState(relayStateManual);
+   relay.setRelayMode(relayModeManual);
 }
 
 TEST(RelayTests, relayTurnsOnAtStartOfPeriod)
 {
    Relay relay(1, 30);
    setMillis(1);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", HIGH);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
@@ -109,7 +109,7 @@ TEST(RelayTests, relayTurnsOffAtEndOfDutyCycle)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    relay.loop();
    setMillis(14999);
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
@@ -123,7 +123,7 @@ TEST(RelayTests, relayTurnsBackOnAtEndOfPeriod)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    relay.loop();
    setMillis(29999);
    relay.loop();
@@ -139,7 +139,7 @@ TEST(RelayTests, relayShouldNotTurnOnIfDutyCycleIsZero)
    Relay relay(1, 30);
    relay.setDutyCyclePercent(0.0);
    setMillis(0);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
@@ -149,7 +149,7 @@ TEST(RelayTests, checkForRollover)
 {
    Relay relay(1, 30);
    setMillis(UINT32_MAX-15000);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(UINT32_MAX-1);
@@ -170,13 +170,13 @@ TEST(RelayTests, ifIdleOutputDoesNotChange)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(1500);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
-   relay.setRelayState(relayStateManual);
+   relay.setRelayMode(relayModeManual);
    relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(31000);
@@ -188,7 +188,7 @@ TEST(RelayTests, ifIdleSettingRelayPositionWorks)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateManual);
+   relay.setRelayMode(relayModeManual);
    relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(16000);
@@ -201,3 +201,10 @@ TEST(RelayTests, ifIdleSettingRelayPositionWorks)
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
 
+TEST(RelayTests, canSetAndGetPeriod)
+{
+   Relay relay(1, 30);
+   CHECK_EQUAL(30, relay.getPeriodInSeconds());
+   relay.setPeriodInSeconds(15);
+   CHECK_EQUAL(15, relay.getPeriodInSeconds());
+}

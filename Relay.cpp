@@ -14,19 +14,19 @@ Relay::Relay(uint8_t pin, uint16_t periodInSeconds): _pin(pin), _periodInSeconds
     pinMode(_pin, OUTPUT);
     digitalWrite(_pin, LOW);
     _dutyCycle = 0.5;
-    _state = relayStateManual;
+    _mode = relayModeManual;
     _position = relayPositionOpen;
 }
 
-void Relay::setRelayState(RelayState state) {
-   switch (state) {
-      case relayStateManual:
-         _state = state;
+void Relay::setRelayMode(RelayMode mode) {
+   switch (mode) {
+      case relayModeManual:
+         _mode = mode;
          setRelayPosition(relayPositionOpen);
          break;
-      case relayStateAutomatic:
-         if (relayStateAutomatic != _state) {
-            _state = state;
+      case relayModeAutomatic:
+         if (relayModeAutomatic != _mode) {
+            _mode = mode;
             _periodTime = 0;
             _oldTime = millis();
          }
@@ -34,8 +34,8 @@ void Relay::setRelayState(RelayState state) {
    }
 }
 
-RelayState Relay::getRelayState(void) {
-   return _state;
+RelayMode Relay::getRelayMode(void) {
+   return _mode;
 }
 
 void Relay::setRelayPosition(RelayPosition position) {
@@ -62,11 +62,19 @@ double Relay::getDutyCyclePercent(void) {
    return _dutyCycle;  
 }
 
+void Relay::setPeriodInSeconds(uint16_t periodInSeconds) {
+   _periodInSeconds = periodInSeconds;
+}
+
+uint16_t Relay::getPeriodInSeconds(void) {
+   return _periodInSeconds;
+}
+
 void Relay::loop(void) {
    uint32_t newTime = millis();
    uint32_t offTime = _periodInSeconds * 1000 * _dutyCycle;
 
-   if (_state == relayStateManual) {
+   if (_mode == relayModeManual) {
       return;
    }
 

@@ -13,9 +13,9 @@
 #include <stdint.h>
 
 typedef enum {
-  relayStateManual,
-  relayStateAutomatic
-} RelayState;
+  relayModeManual,
+  relayModeAutomatic
+} RelayMode;
 
 typedef enum {
   relayPositionOpen,
@@ -25,19 +25,21 @@ typedef enum {
 class Relay {
   public:
     Relay(uint8_t pin, uint16_t periodInSeconds);
-    void setRelayState(RelayState state);
-    RelayState getRelayState(void);
+    void setRelayMode(RelayMode mode);
+    RelayMode getRelayMode(void);
     void setRelayPosition(RelayPosition position);
     RelayPosition getRelayPosition(void);
     void setDutyCyclePercent(double dutyCycle);
     double getDutyCyclePercent(void);
+    void setPeriodInSeconds(uint16_t periodInSeconds);
+    uint16_t getPeriodInSeconds(void);
     void loop(void);
 
   private:
     uint8_t _pin;
     uint16_t _periodInSeconds;
     double _dutyCycle;
-    RelayState _state;
+    RelayMode _mode;
     RelayPosition _position;
     uint32_t _periodTime;
     uint32_t _oldTime;
