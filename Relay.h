@@ -13,8 +13,8 @@
 #include <stdint.h>
 
 typedef enum {
-  relayStateIdle,
-  relayStateRunning
+  relayStateManual,
+  relayStateAutomatic
 } RelayState;
 
 typedef enum {

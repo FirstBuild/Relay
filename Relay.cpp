@@ -14,18 +14,18 @@ Relay::Relay(uint8_t pin, uint16_t periodInSeconds): _pin(pin), _periodInSeconds
     pinMode(_pin, OUTPUT);
     digitalWrite(_pin, LOW);
     _dutyCycle = 0.5;
-    _state = relayStateIdle;
+    _state = relayStateManual;
     _position = relayPositionOpen;
 }
 
 void Relay::setRelayState(RelayState state) {
    switch (state) {
-      case relayStateIdle:
+      case relayStateManual:
          _state = state;
          setRelayPosition(relayPositionOpen);
          break;
-      case relayStateRunning:
-         if (relayStateRunning != _state) {
+      case relayStateAutomatic:
+         if (relayStateAutomatic != _state) {
             _state = state;
             _periodTime = 0;
             _oldTime = millis();
@@ -66,7 +66,7 @@ void Relay::loop(void) {
    uint32_t newTime = millis();
    uint32_t offTime = _periodInSeconds * 1000 * _dutyCycle;
 
-   if (_state == relayStateIdle) {
+   if (_state == relayStateManual) {
       return;
    }
 

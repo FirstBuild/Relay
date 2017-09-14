@@ -32,7 +32,7 @@ TEST(RelayTests, constructor)
    mock().checkExpectations();
 
    CHECK_EQUAL(relayPositionOpen, pRelay->getRelayPosition());
-   CHECK_EQUAL(relayStateIdle, pRelay->getRelayState());
+   CHECK_EQUAL(relayStateManual, pRelay->getRelayState());
    DOUBLES_EQUAL(0.5, pRelay->getDutyCyclePercent(), 0.0001);
 
    delete pRelay;
@@ -61,10 +61,10 @@ TEST(RelayTests, setRelayState)
 {
    Relay relay(1, 30);
 
-   relay.setRelayState(relayStateRunning);
-   CHECK_EQUAL(relayStateRunning, relay.getRelayState());
-   relay.setRelayState(relayStateIdle);
-   CHECK_EQUAL(relayStateIdle, relay.getRelayState());
+   relay.setRelayState(relayStateAutomatic);
+   CHECK_EQUAL(relayStateAutomatic, relay.getRelayState());
+   relay.setRelayState(relayStateManual);
+   CHECK_EQUAL(relayStateManual, relay.getRelayState());
 }
 
 TEST(RelayTests, setDutyCycle)
@@ -88,18 +88,18 @@ TEST(RelayTests, setDutyCycleIgnoresOutOfRangeInput)
 TEST(RelayTests, settingStateToIdleTurnsOffRelay)
 {
    Relay relay(1, 30);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    relay.setRelayPosition(relayPositionClosed);
 
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", LOW);
-   relay.setRelayState(relayStateIdle);
+   relay.setRelayState(relayStateManual);
 }
 
 TEST(RelayTests, relayTurnsOnAtStartOfPeriod)
 {
    Relay relay(1, 30);
    setMillis(1);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", HIGH);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
@@ -109,7 +109,7 @@ TEST(RelayTests, relayTurnsOffAtEndOfDutyCycle)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    relay.loop();
    setMillis(14999);
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
@@ -123,7 +123,7 @@ TEST(RelayTests, relayTurnsBackOnAtEndOfPeriod)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    relay.loop();
    setMillis(29999);
    relay.loop();
@@ -139,7 +139,7 @@ TEST(RelayTests, relayShouldNotTurnOnIfDutyCycleIsZero)
    Relay relay(1, 30);
    relay.setDutyCyclePercent(0.0);
    setMillis(0);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
@@ -149,7 +149,7 @@ TEST(RelayTests, checkForRollover)
 {
    Relay relay(1, 30);
    setMillis(UINT32_MAX-15000);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(UINT32_MAX-1);
@@ -170,13 +170,13 @@ TEST(RelayTests, ifIdleOutputDoesNotChange)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateRunning);
+   relay.setRelayState(relayStateAutomatic);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(1500);
    relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
-   relay.setRelayState(relayStateIdle);
+   relay.setRelayState(relayStateManual);
    relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(31000);
@@ -188,7 +188,7 @@ TEST(RelayTests, ifIdleSettingRelayPositionWorks)
 {
    Relay relay(1, 30);
    setMillis(0);
-   relay.setRelayState(relayStateIdle);
+   relay.setRelayState(relayStateManual);
    relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(16000);
