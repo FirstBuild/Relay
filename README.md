@@ -14,7 +14,7 @@ To use Relay, create an instance and set the state to running:
 Relay relay(RELAY_PIN, RELAY_PERIOD);
 
 void setup() {
-   relay.setRelayState(relayStateAutomatic);
+   relay.setRelayMode(relayModeAutomatic);
 }
 ```
 
@@ -29,16 +29,16 @@ void loop() {
 
 
 ```
-void setRelayState(RelayState state);
+void setRelayMode(RelayMode state);
 ```
-Call `setRelayState` with `relayStateManual` or `relayStateAutomatic`
-- `relayStateManual` - Turns the relay off and disables the relay from automatic operation.  Use this state for manual operation of the relay.
-- `relayStateAutomatic` - Starts automatic operation of the relay using the period and duty cycle.
+Call `setRelayMode` with `relayModeManual` or `relayModeAutomatic`
+- `relayModeManual` - Turns the relay off and disables the relay from automatic operation.  Use this state for manual operation of the relay.
+- `relayModeAutomatic` - Starts automatic operation of the relay using the period and duty cycle.
 
 ```
-RelayState getRelayState(void);
+RelayMode getRelayMode(void);
 ```
-Returns the state of the relay, `relayStateManual` or `relayStateAutomatic`.
+Returns the state of the relay, `relayModeManual` or `relayModeAutomatic`.
 
 ```
 void setRelayPosition(RelayPosition position);
@@ -61,6 +61,16 @@ Set the duty cycle of the relay.  `dutyCycle` must be between 0.0 and 1.0 inclus
 double getDutyCyclePercent(void);
 ```
 Get the duty cycle of the relay.
+
+```
+    void setPeriodInSeconds(uint16_t periodInSeconds);
+```
+Set the period of opertion of the relay in seconds.
+
+```
+    uint16_t getPeriodInSeconds(void);
+```
+Get the period fo the operation of the relay in seconds.
 
 ### Testing
 
