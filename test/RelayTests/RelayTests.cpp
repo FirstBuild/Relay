@@ -101,7 +101,7 @@ TEST(RelayTests, relayTurnsOnAtStartOfPeriod)
    setMillis(1);
    relay.setRelayState(relayStateRunning);
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", HIGH);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
 }
 
@@ -110,12 +110,12 @@ TEST(RelayTests, relayTurnsOffAtEndOfDutyCycle)
    Relay relay(1, 30);
    setMillis(0);
    relay.setRelayState(relayStateRunning);
-   relay.updateRelay();
+   relay.loop();
    setMillis(14999);
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(15000);
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", LOW);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
 
@@ -124,13 +124,13 @@ TEST(RelayTests, relayTurnsBackOnAtEndOfPeriod)
    Relay relay(1, 30);
    setMillis(0);
    relay.setRelayState(relayStateRunning);
-   relay.updateRelay();
+   relay.loop();
    setMillis(29999);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(30000);
    mock().expectOneCall("digitalWrite").withParameter("pin", 1).withParameter("state", HIGH);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
 }
 
@@ -140,7 +140,7 @@ TEST(RelayTests, relayShouldNotTurnOnIfDutyCycleIsZero)
    relay.setDutyCyclePercent(0.0);
    setMillis(0);
    relay.setRelayState(relayStateRunning);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
 
@@ -150,19 +150,19 @@ TEST(RelayTests, checkForRollover)
    Relay relay(1, 30);
    setMillis(UINT32_MAX-15000);
    relay.setRelayState(relayStateRunning);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(UINT32_MAX-1);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(UINT32_MAX);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(14999);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(15000);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
 }
 
@@ -171,16 +171,16 @@ TEST(RelayTests, ifIdleOutputDoesNotChange)
    Relay relay(1, 30);
    setMillis(0);
    relay.setRelayState(relayStateRunning);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    setMillis(1500);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    relay.setRelayState(relayStateIdle);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(31000);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
 
@@ -189,15 +189,15 @@ TEST(RelayTests, ifIdleSettingRelayPositionWorks)
    Relay relay(1, 30);
    setMillis(0);
    relay.setRelayState(relayStateIdle);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
    setMillis(16000);
    relay.setRelayPosition(relayPositionClosed);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
    relay.setRelayPosition(relayPositionOpen);
    setMillis(31000);
-   relay.updateRelay();
+   relay.loop();
    CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
 }
 

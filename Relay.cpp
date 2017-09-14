@@ -62,7 +62,7 @@ double Relay::getDutyCyclePercent(void) {
    return _dutyCycle;  
 }
 
-void Relay::updateRelay(void) {
+void Relay::loop(void) {
    uint32_t newTime = millis();
    uint32_t offTime = _periodInSeconds * 1000 * _dutyCycle;
 

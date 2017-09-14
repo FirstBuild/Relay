@@ -31,7 +31,7 @@ class Relay {
     RelayPosition getRelayPosition(void);
     void setDutyCyclePercent(double dutyCycle);
     double getDutyCyclePercent(void);
-    void updateRelay(void);
+    void loop(void);
 
   private:
     uint8_t _pin;

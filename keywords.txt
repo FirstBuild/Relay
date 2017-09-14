@@ -18,7 +18,7 @@ setRelayState	KEYWORD2
 setRelayPosition	KEYWORD2
 getRelayPosition	KEYWORD2
 setDutyCyclePercent	KEYWORD2
-updateRelay	KEYWORD2
+loop	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
