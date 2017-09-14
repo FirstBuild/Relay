@@ -24,7 +24,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 
-  relay.setRelayState(relayStateAutomatic);
+  relay.setRelayMode(relayModeAutomatic);
   oldTime = millis();
   currentPosition = relay.getRelayPosition();
 }
