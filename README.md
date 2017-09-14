@@ -70,7 +70,7 @@ Set the period of opertion of the relay in seconds.
 ```
     uint16_t getPeriodInSeconds(void);
 ```
-Get the period fo the operation of the relay in seconds.
+Get the period of the operation of the relay in seconds.
 
 ### Testing
 
