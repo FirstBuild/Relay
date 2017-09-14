@@ -22,7 +22,7 @@ void Relay::setRelayState(RelayState state) {
    switch (state) {
       case relayStateIdle:
          _state = state;
-         digitalWrite(_pin, LOW);
+         setRelayPosition(relayPositionOpen);
          break;
       case relayStateRunning:
          if (relayStateRunning != _state) {
@@ -65,6 +65,10 @@ double Relay::getDutyCyclePercent(void) {
 void Relay::updateRelay(void) {
    uint32_t newTime = millis();
    uint32_t offTime = _periodInSeconds * 1000 * _dutyCycle;
+
+   if (_state == relayStateIdle) {
+      return;
+   }
 
    if (newTime < _oldTime) {
       _periodTime += (UINT32_MAX - _oldTime + newTime);

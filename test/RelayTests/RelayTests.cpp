@@ -166,4 +166,38 @@ TEST(RelayTests, checkForRollover)
    CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
 }
 
+TEST(RelayTests, ifIdleOutputDoesNotChange)
+{
+   Relay relay(1, 30);
+   setMillis(0);
+   relay.setRelayState(relayStateRunning);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
+   setMillis(1500);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
+   relay.setRelayState(relayStateIdle);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
+   setMillis(31000);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
+}
+
+TEST(RelayTests, ifIdleSettingRelayPositionWorks)
+{
+   Relay relay(1, 30);
+   setMillis(0);
+   relay.setRelayState(relayStateIdle);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
+   setMillis(16000);
+   relay.setRelayPosition(relayPositionClosed);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionClosed, relay.getRelayPosition());
+   relay.setRelayPosition(relayPositionOpen);
+   setMillis(31000);
+   relay.updateRelay();
+   CHECK_EQUAL(relayPositionOpen, relay.getRelayPosition());
+}
 
