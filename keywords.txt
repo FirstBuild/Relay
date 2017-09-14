@@ -14,7 +14,7 @@ Relay	KEYWORD1
 
 Relay	KEYWORD2
 getRelayState	KEYWORD2
-getRelayState	KEYWORD2
+setRelayState	KEYWORD2
 setRelayPosition	KEYWORD2
 getRelayPosition	KEYWORD2
 setDutyCyclePercent	KEYWORD2
