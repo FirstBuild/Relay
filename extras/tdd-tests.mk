@@ -28,9 +28,9 @@ CPPUTEST_CXXFLAGS += -fprofile-arcs -ftest-coverage
 # so that memory leak detection does not conflict with stl.
 #CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE = -include ApplicationLib/ExamplesNewOverrides.h
 
-SRC_DIRS = \
+SRC_DIRS = ..\
 
-SRC_FILES = Relay.cpp \
+SRC_FILES = ../src/Relay.cpp \
 	    
 TEST_SRC_DIRS = \
 	test \
@@ -44,6 +44,7 @@ INCLUDE_DIRS = ./ \
 	test/mocks \
 	test/mocks/Arduino \
 	$(CPPUTEST_HOME)/include \
+	../src/
 
 include $(CPPUTEST_HOME)/build/MakefileWorker.mk
 

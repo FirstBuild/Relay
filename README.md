@@ -77,6 +77,7 @@ Get the period of the operation of the relay in seconds.
 To run the tests:
 
 ```
+cd extras
 make -f tdd_tests.mk
 ```
 
@@ -86,5 +87,5 @@ To generate test coverage reports:
 ./gen_cov_report.sh
 ```
 
-An HTML test coverage report will be place in the output directory.
+An HTML test coverage report will be place in the `extras/output` directory.
 
