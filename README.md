@@ -87,5 +87,5 @@ To generate test coverage reports:
 ./gen_cov_report.sh
 ```
 
-An HTML test coverage report will be place in the `extras/output` directory.
+An HTML test coverage report will be placed in the `extras/output` directory.
 
