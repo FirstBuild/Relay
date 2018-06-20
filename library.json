@@ -3,7 +3,7 @@
   "keywords": "relay, duty cycle",
   "description": "Control a relay by specifying a period and duty cycle.  Useful for PID control where the output is a relay.",
   "url": "https://github.com/FirstBuild/Relay",
-  "include": "Relay"
+  "include": "Relay",
   "authors":
   [
     {
