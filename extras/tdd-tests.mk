@@ -14,8 +14,11 @@ CPPUTEST_CXXFLAGS += -Wno-old-style-cast
 #--- Inputs ----#
 COMPONENT_NAME = RelayTests
 CPPUTEST_HOME = ~/source/cpputest
+CPPUTEST_OBJS_DIR = objs
+CPPUTEST_LIBS_DIR = libs
 
 CPPUTEST_USE_GCOV = Y
+CPPUTEST_USE_VPATH = Y
 
 CPPUTEST_USE_EXTENSIONS = Y
 CPP_PLATFORM = Gcc
@@ -28,9 +31,10 @@ CPPUTEST_CXXFLAGS += -fprofile-arcs -ftest-coverage
 # so that memory leak detection does not conflict with stl.
 #CPPUTEST_MEMLEAK_DETECTOR_NEW_MACRO_FILE = -include ApplicationLib/ExamplesNewOverrides.h
 
-SRC_DIRS = ..\
+SRC_DIRS = .. \
+	   ../src \
 
-SRC_FILES = ../src/Relay.cpp \
+# SRC_FILES = ../src/Relay.cpp \
 	    
 TEST_SRC_DIRS = \
 	test \
@@ -44,7 +48,7 @@ INCLUDE_DIRS = ./ \
 	test/mocks \
 	test/mocks/Arduino \
 	$(CPPUTEST_HOME)/include \
-	../src/
+	../src/ \
 
 include $(CPPUTEST_HOME)/build/MakefileWorker.mk
 
